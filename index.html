@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Teshavoy Virtual Assistant</title>
+</head>
+
+<body style="background:black;color:white;text-align:center;font-family:sans-serif">
+
+<h1>🎙 Teshavoy Virtual Assistant</h1>
+
+<button onclick="startListening()" 
+style="padding:15px 30px;font-size:18px;cursor:pointer;">
+Gapirishni boshlash
+</button>
+
+<p id="status" style="margin-top:20px;"></p>
+
+<script>
+
+const status = document.getElementById("status");
+
+function playAudio(fileName) {
+    const audio = new Audio(fileName);
+    audio.play();
+}
+
+function startListening() {
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+        alert("Brauzeringiz mos emas. Chrome ishlating.");
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "uz-UZ";
+    recognition.start();
+
+    status.innerText = "Tinglanyapti...";
+
+    recognition.onresult = function(event) {
+
+        let userText = event.results[0][0].transcript.toLowerCase();
+        status.innerText = "Siz aytdingiz: " + userText;
+
+        if (userText.includes("salom")) {
+            playAudio("1.wav");
+        }
+        else if (userText.includes("ahvollaring") || userText.includes("axvollaring") || userText.includes("yaxshimi")) {
+            playAudio("2.wav");
+        }
+        else if (userText.includes("yangilik") || userText.includes("musiqa olami")) {
+            playAudio("3.wav");
+        }
+        else if (userText.includes("haqingda gapir") || userText.includes("o'zing haqingda gapirib ber") || userText.includes("gapir")) {
+            playAudio("4.wav");
+        }
+        else if (userText.includes("musiqa inson uchun")) {
+            playAudio("5.wav");
+        }
+        else if (userText.includes("maqom") || userText.includes("o'zbek milliy musiqasi")) {
+            playAudio("6.wav");
+        }
+        else if (userText.includes("katta raxmat")) {
+            playAudio("7.wav");
+        }
+        else {
+            playAudio("tushunmadim.wav");
+        }
+    };
+
+    recognition.onerror = function() {
+        status.innerText = "Xatolik yuz berdi.";
+        playAudio("uzr.mp3");
+    };
+}
+
+</script>
+
+</body>
+</html>
