@@ -15,15 +15,58 @@ style="padding:15px 30px;font-size:18px;cursor:pointer;">
 Gapirishni boshlash
 </button>
 
+<button onclick="pauseAudio()" 
+style="padding:15px 30px;font-size:18px;cursor:pointer; margin-left:10px;">
+Tohtatish
+</button>
+
+<button onclick="resumeAudio()" 
+style="padding:15px 30px;font-size:18px;cursor:pointer; margin-left:10px;">
+Davom ettirish
+</button>
+
+<button onclick="stopAudio()" 
+style="padding:15px 30px;font-size:18px;cursor:pointer; margin-left:10px;">
+Toʻliq toʻxtatish
+</button>
+
 <p id="status" style="margin-top:20px;"></p>
 
 <script>
 
 const status = document.getElementById("status");
 
+let currentAudio = null;
+
 function playAudio(fileName) {
-    const audio = new Audio(fileName);
-    audio.play();
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+    }
+    currentAudio = new Audio(fileName);
+    currentAudio.play();
+}
+
+function pauseAudio() {
+    if (currentAudio && !currentAudio.paused) {
+        currentAudio.pause();
+        status.innerText = "Musiqa pauzada.";
+    }
+}
+
+function resumeAudio() {
+    if (currentAudio && currentAudio.paused) {
+        currentAudio.play();
+        status.innerText = "Musiqa davom ettirilmoqda.";
+    }
+}
+
+function stopAudio() {
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        status.innerText = "Musiqa toʻliq toʻxtatildi.";
+    }
 }
 
 function startListening() {
@@ -49,7 +92,7 @@ function startListening() {
         if (userText.includes("salom")) {
             playAudio("1.wav");
         }
-        else if (userText.includes("ahvollaring") || userText.includes("axvollaring") || userText.includes("yaxshimi")) {
+        else if (userText.includes("ahvollaring") || userText.includes("axvollaring") || userText.includes("yaxshimi") || userText.includes("qalay") || userText.includes("qanday")) {
             playAudio("2.wav");
         }
         else if (userText.includes("yangilik") || userText.includes("musiqa olami")) {
